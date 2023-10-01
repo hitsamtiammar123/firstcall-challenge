@@ -4,6 +4,8 @@ import { User } from '../types/user'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import withRedux from '@/redux/withRedux';
 import { setNewFetch } from '@/redux/mainSlice';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export interface UsersTableProps{
   defaultData: User[]
@@ -27,7 +29,6 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
   }
 
   useEffect(() => {
-    console.log('Is new fetch called', { isNewFetch })
     if(isNewFetch){
       loadData();
     }
@@ -77,7 +78,7 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
             <td>{item.lastname}</td>
             <td>
               <div className="flex flex-row">
-                <button className="btn btn-primary me-4">Edit</button>
+                <Link href={`/users/${item.id}`} className="btn btn-primary me-4">Edit</Link>
                 <button className="btn btn-error" onClick={() => deleteData(item.id)}>Delete</button>
               </div>
             </td>

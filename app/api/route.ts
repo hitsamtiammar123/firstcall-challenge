@@ -39,6 +39,13 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get('id')
 
   console.log({ id })
+  if(id){
+    const data = DATA.find((item) => item.id === id)
+    if(!data){
+      return Response.json({ status: 404, message: 'Data not found' })
+    }
+    return Response.json({ status: 200, data })
+  }
   return Response.json({ status: 200, data: DATA })
 }
 
@@ -47,7 +54,7 @@ export async function POST(request: NextRequest){
   const data: User[] = [];
   const body = await request.json()
 
-  console.log({ post: body })
+
   DATA.push({
     id: new Date().getTime().toString(),
     firstname: body.firstname,
@@ -60,18 +67,25 @@ export async function POST(request: NextRequest){
 
 export async function PUT(request: NextRequest){
   fetchData();
-  const data: User[] = [];
-  const searchParams = await request.json()
+  const body = await request.json()
 
-  console.log({ put: searchParams })
-   return Response.json({ status: 200, data: DATA })
+  // console.log({ put: searchParams })
+  const id = body.id
+  const searchedData = DATA.find((item) => item.id === id);
+  if(searchedData){
+    searchedData.firstname = body.firstname;
+    searchedData.lastname = body.lastname;
+    writeData()
+    return Response.json({ status: 200, message: 'Data has been updated' })
+  }else{
+    return Response.json({ status: 200, message: 'Data not found' })
+  }
 }
 
 export async function DELETE(request: NextRequest){
   fetchData();
   const searchParams = await request.json()
 
-  console.log({ delete: searchParams })
   const id = searchParams.id;
 
   if(DATA.findIndex((item) => item.id === id) !== -1){
