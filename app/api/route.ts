@@ -8,7 +8,6 @@ function fetchData(){
   const check = fs.existsSync('./data.json');
   if(check){
     const content = fs.readFileSync('./data.json', 'utf-8')
-    console.log({ content })
     DATA = JSON.parse(content);
 
   }else{
@@ -33,12 +32,11 @@ function writeData(){
 
 
 export async function GET(request: NextRequest) {
-  fetchData();
-  const data: User[] = [];
+  try{
+    fetchData();
   const searchParams = request.nextUrl.searchParams
   const id = searchParams.get('id')
 
-  console.log({ id })
   if(id){
     const data = DATA.find((item) => item.id === id)
     if(!data){
@@ -47,11 +45,15 @@ export async function GET(request: NextRequest) {
     return Response.json({ status: 200, data })
   }
   return Response.json({ status: 200, data: DATA })
+  }catch(e){
+    console.log('An erro occured on GET', { e })
+    return Response.json({ status: 500, message: 'An erro occured ', e })
+  }
+
 }
 
 export async function POST(request: NextRequest){
   fetchData();
-  const data: User[] = [];
   const body = await request.json()
 
 
@@ -69,7 +71,6 @@ export async function PUT(request: NextRequest){
   fetchData();
   const body = await request.json()
 
-  // console.log({ put: searchParams })
   const id = body.id
   const searchedData = DATA.find((item) => item.id === id);
   if(searchedData){
