@@ -13,9 +13,6 @@ export default async function Home() {
   }
 
   const final = await data.json()
-
-  console.log({ final })
-
   return (
     <main className="p-5">
       <h1 className="font-bold text-lg">User List Table</h1>

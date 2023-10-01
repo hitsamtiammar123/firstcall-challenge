@@ -59,6 +59,7 @@ export async function POST(request: NextRequest){
 }
 
 export async function PUT(request: NextRequest){
+  fetchData();
   const data: User[] = [];
   const searchParams = await request.json()
 
@@ -67,10 +68,18 @@ export async function PUT(request: NextRequest){
 }
 
 export async function DELETE(request: NextRequest){
-  const data: User[] = [];
+  fetchData();
   const searchParams = await request.json()
 
   console.log({ delete: searchParams })
-   return Response.json({ status: 200, data: DATA })
+  const id = searchParams.id;
+
+  if(DATA.findIndex((item) => item.id === id) !== -1){
+    DATA = DATA.filter((item) => item.id !== id)
+    writeData()
+    return Response.json({ status: 200, message: 'Data has been deleted'  })
+  }else{
+    return Response.json({ status: 404, message: 'Data not found'  })
+  }
 }
 

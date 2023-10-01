@@ -3,6 +3,9 @@ import React from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { RedirectType, redirect, useRouter } from 'next/navigation';
 import Router from 'next/router';
+import { useAppDispatch } from '@/redux/hooks';
+import { setNewFetch } from '@/redux/mainSlice';
+import withRedux from '@/redux/withRedux';
 
 type Inputs = {
   username: string;
@@ -10,7 +13,7 @@ type Inputs = {
   lastname: string;
 }
 
-export default function Users() {
+export default withRedux(function  Users() {
    const {
     register,
     handleSubmit,
@@ -19,6 +22,7 @@ export default function Users() {
   } = useForm<Inputs>()
 
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const onSubmit: SubmitHandler<Inputs> = async(data) => {
 
@@ -36,6 +40,7 @@ export default function Users() {
 
     if(d.status === 200){
       router.push('/')
+      dispatch(setNewFetch(true))
     }
   }
   return (
@@ -77,4 +82,4 @@ export default function Users() {
     </form>
 
   )
-}
+})
