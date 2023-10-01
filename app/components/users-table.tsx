@@ -4,7 +4,6 @@ import { User } from '../types/user'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import withRedux from '@/redux/withRedux';
 import { setNewFetch } from '@/redux/mainSlice';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 export interface UsersTableProps{
@@ -27,6 +26,10 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
     dispatch(setNewFetch(false))
     console.log({ final })
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   useEffect(() => {
     if(isNewFetch){
