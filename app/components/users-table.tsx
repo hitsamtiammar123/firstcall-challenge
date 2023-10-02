@@ -17,7 +17,7 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
   const dispatch = useAppDispatch();
 
   async function loadData(){
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api`)
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
     if(!data.ok){
       return;
     }
@@ -28,10 +28,6 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
   }
 
   useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
     if(isNewFetch){
       loadData();
     }
@@ -40,8 +36,12 @@ export default withRedux(function UsersTable({ defaultData }: UsersTableProps ) 
   async function deleteData(id: string){
     const isConfirm = confirm('Are you sure want to delte this data?');
     if(isConfirm){
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api`, {
+      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
         method: 'DELETE',
+        mode:'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           id
         })

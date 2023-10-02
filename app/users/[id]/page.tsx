@@ -1,10 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react'
-import { useForm, SubmitHandler } from "react-hook-form"
-import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/redux/hooks';
-import { setNewFetch } from '@/redux/mainSlice';
-import withRedux from '@/redux/withRedux';
+import React from 'react'
 import Users from '../users';
 
 type Inputs = {

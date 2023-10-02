@@ -42,7 +42,7 @@ export default withRedux(function Users({ type, id } : UsersProps) {
   async function loadData(){
     try{
       setLoading(true)
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/?id=${id}`, { cache: 'no-cache'})
+      const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}?id=${id}`, { cache: 'no-cache'})
       if(!data.ok){
         alert('An error occured when load some data');
         return;
@@ -80,9 +80,14 @@ export default withRedux(function Users({ type, id } : UsersProps) {
         "lastname": data.lastname
       }
     }
-    const res =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api`,{
+    const res =  await fetch(`${process.env.NEXT_PUBLIC_API_URL}`,{
       method: method,
-      body: JSON.stringify(request)
+      mode:'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request),
+
     })
 
     const d = await res.json();
