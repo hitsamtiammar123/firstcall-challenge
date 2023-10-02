@@ -1,7 +1,7 @@
 import UsersTable from './components/users-table'
 
 export default async function Home() {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, { cache: 'no-cache'})
   if(!data.ok){
     return;
   }
